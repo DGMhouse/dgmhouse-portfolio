@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { display, mono, sans } from "@/components/fonts";
 import "./globals.css";
 
@@ -9,29 +9,38 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+import type { Metadata } from "next";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://dgmhouse.com"),
   title: {
-    default: "DGM HOUSE — Software Development Agency",
+    default: "DGM HOUSE | #1 Web, App & Digital Marketing Agency in Chikkamagaluru",
     template: "%s | DGM HOUSE",
   },
   description:
-    "We architect & scale mission-critical web applications, cloud architectures, AI systems, and digital products that scale without breaking.",
+    "Ranked as the top web development, mobile app, and digital marketing agency in Chikkamagaluru and Hassan. We build high-performance software and drive local business growth through expert SEO.",
   applicationName: "DGM HOUSE",
   authors: [{ name: "DGM HOUSE", url: "https://dgmhouse.com" }],
   generator: "Next.js",
   keywords: [
-    "Software Development Agency",
-    "Full-Stack Development",
+    "Web Development Agency Chikkamagaluru",
+    "App Development Company Chikkamagaluru",
+    "Digital Marketing Agency Chikkamagaluru",
+    "Digital Marketing Hassan",
+    "Web Design Hassan",
+    "Software Development Agency Karnataka",
+    "SEO Services Chikkamagaluru",
+    "Social Media Marketing Hassan",
+    "Ecommerce Development Chikkamagaluru",
+    "React Native App Developers",
     "Next.js Agency",
-    "Cloud Architecture",
-    "AI Systems & LLMs",
-    "Enterprise Web Applications",
-    "React Native",
     "DGM HOUSE",
   ],
   creator: "DGM HOUSE",
   publisher: "DGM HOUSE",
+  alternates: {
+    canonical: "https://dgmhouse.com",
+  },
   robots: {
     index: true,
     follow: true,
@@ -45,18 +54,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
     url: "https://dgmhouse.com",
     siteName: "DGM HOUSE",
-    title: "DGM HOUSE - Software Development Agency",
+    title: "Top Web, App & Digital Marketing Agency in Chikkamagaluru & Hassan",
     description:
-      "From zero-to-one architecture to hyper-scale cloud infrastructure, we partner with visionary founders and enterprises to engineer mission-critical solutions.",
+      "Looking for the best digital marketing and software development in Chikkamagaluru? DGM HOUSE specializes in custom web apps, mobile apps, and result-driven SEO for businesses in Hassan and Chikkamagaluru.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DGM HOUSE — Software Development Agency",
+    title: "DGM HOUSE | #1 Digital Marketing & Web Agency in Chikkamagaluru",
     description:
-      "We architect & scale mission-critical software systems that scale without breaking.",
+      "The leading web development and digital marketing agency serving Chikkamagaluru and Hassan. We build scalable digital products and drive local business growth.",
   },
   icons: {
     icon: [
@@ -64,6 +73,13 @@ export const metadata: Metadata = {
       { url: "/favicon.ico" },
     ],
     apple: [{ url: "/icon.svg" }],
+  },
+  // Hyper-local SEO tags to force Google to associate the site with Chikkamagaluru & Hassan
+  other: {
+    "geo.region": "IN-KA",
+    "geo.placename": "Chikkamagaluru",
+    "geo.position": "13.3153;75.7754",
+    "ICBM": "13.3153, 75.7754",
   },
 };
 

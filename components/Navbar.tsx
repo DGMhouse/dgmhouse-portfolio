@@ -80,8 +80,8 @@ const PhoneIcon = ({ className = "" }: { className?: string }) => (
 export default function Navbar({
   logoSrc = "/logo.svg",
   items = DEFAULT_ITEMS,
-  ctaText = "Book a free call",
-  ctaLink = "#contact",
+  ctaText = "Connect",
+  ctaLink = "tel:+6360344703",
   whatsappLink,
   email,
 }: NavbarProps) {

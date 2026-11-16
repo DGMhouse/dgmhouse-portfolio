@@ -648,8 +648,8 @@ export default function Process({
   closingTitle = "Step one is just",
   closingHighlight = "a friendly chat.",
   closingText = "It's free to talk. Tell us your idea and we'll tell you honestly how we'd bring it to life: what it takes, how long it'll be, and what it'll cost.",
-  ctaText = "Book a call",
-  ctaLink = "#contact",
+  ctaText = "Connect with us",
+  ctaLink = "tel:+6360344703",
 }: ProcessProps) {
   const n = steps.length;
   const sectionRef = useRef<HTMLDivElement>(null);

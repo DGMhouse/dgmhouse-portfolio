@@ -46,18 +46,21 @@ const MEMBERS: Member[] = [
     role: "Co-founder · Design & Frontend",
     bio: "Obsessed with how a website feels in the first three seconds. Turns your brand into pages that look sharp, load fast and make people want to scroll.",
     skills: ["UI design", "React & Next.js", "Motion", "Branding"],
+    image: "/team/deeki.jpeg",
   },
   {
     name: "Gagan",
     role: "Co-founder · Full-stack & AI",
     bio: "Builds the engine under the hood: full-stack apps, payments and smart automation. If it needs to work reliably at 2 a.m., he's the one who builds it.",
     skills: ["MERN stack", "Next.js", "AI / ML", "Payments"],
+    image: "/team/gagan.jpeg",
   },
   {
     name: "Mokshith",
     role: "Co-founder · Backend & Cloud",
     bio: "Keeps everything fast, secure and online. Databases, hosting and launch day are his, so your site stays up and your data stays safe.",
     skills: ["APIs & databases", "Cloud hosting", "Security", "Performance"],
+    image: "/team/moki.jpeg",
   },
 ];
 
@@ -254,11 +257,11 @@ export default function Team({
             Want to meet us <span style={{ color: LIME, textShadow: "0 0 44px rgba(198,255,46,.35)" }}>for real?</span>
           </p>
           <a
-            href="#contact"
+            href="tel:+6360344703"
             className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-9 py-4 text-sm font-bold transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_0_60px_-8px_rgba(198,255,46,.7)] active:scale-95"
             style={{ background: LIME, color: INK }}
           >
-            <span className="relative">Book a free call</span>
+            <span className="relative">Connect</span>
             <svg className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.6" viewBox="0 0 24 24">
               <path strokeLinecap="square" d="M4 12h15m0 0l-6-6m6 6l-6 6" />
             </svg>

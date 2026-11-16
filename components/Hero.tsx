@@ -75,7 +75,7 @@ export default function Hero({
   titleSecondary = "into reality",
   description = "Whether you run a shop in a small town or a growing business in a big city, we'll build you a website you're proud of - and walk with you at every step. No confusing tech talk, just honest advice and good work.",
   primaryCtaText = "Get a Free Quote",
-  primaryCtaLink = "#contact",
+  primaryCtaLink = "https://wa.me/916360344703?text=want%20a%20website%20please%20send%20the%20quote",
   secondaryCtaText = "See Our Work",
   secondaryCtaLink = "#work",
 }: HeroProps) {
