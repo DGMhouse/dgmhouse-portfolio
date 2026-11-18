@@ -235,8 +235,12 @@ function drawCard(ctx: Ctx, w: number, h: number, p: Project, i: number, n: numb
     rr(ctx, fx, fy, fw, fh, r);
     ctx.clip();
     if (img) {
-        const s = Math.max(fw / img.width, fh / img.height);
-        ctx.drawImage(img, fx + (fw - img.width * s) / 2, fy, img.width * s, img.height * s);
+        const iw = img.naturalWidth || img.width || 1;
+        const ih = img.naturalHeight || img.height || 1;
+        const s = Math.max(fw / iw, fh / ih);
+        const dw = iw * s;
+        const dh = ih * s;
+        ctx.drawImage(img, fx + (fw - dw) / 2, fy, dw, dh);
     } else {
         const bh = fh * 0.09;
         const y0 = fy + bh;
@@ -430,14 +434,32 @@ export default function Projects({
 
         projects.forEach((p, i) => {
             if (!p.image) return;
+            const imgSrc = p.image;
             const im = new Image();
-            im.crossOrigin = "anonymous";
+            if (imgSrc.startsWith("http://") || imgSrc.startsWith("https://")) {
+                im.crossOrigin = "anonymous";
+            }
             im.onload = () => {
                 if (disposed) return;
                 imgs[i] = im;
                 paint(i);
             };
-            im.src = p.image;
+            im.onerror = () => {
+                if (im.crossOrigin) {
+                    const fallback = new Image();
+                    fallback.onload = () => {
+                        if (disposed) return;
+                        imgs[i] = fallback;
+                        paint(i);
+                    };
+                    fallback.src = imgSrc;
+                }
+            };
+            im.src = imgSrc;
+            if (im.complete && im.naturalWidth > 0) {
+                imgs[i] = im;
+                paint(i);
+            }
         });
 
         layout();
@@ -492,10 +514,8 @@ export default function Projects({
 
         const onPointerEnterHost = () => {
             const r = host.getBoundingClientRect();
-            // When cursor moves on top of the carousel while it's partially displayed, glide to full screen
-            if (r.top > 24 && r.top < window.innerHeight * 0.85) {
-                snapToFullScreen();
-            } else if (r.top < -24 && r.bottom > window.innerHeight * 0.15) {
+            // When cursor moves on top of the carousel while it's coming into view, glide to full screen
+            if (r.top > 32 && r.top < window.innerHeight * 0.75) {
                 snapToFullScreen();
             }
         };
@@ -504,16 +524,8 @@ export default function Projects({
             const r = host.getBoundingClientRect();
             const fullyDisplayed = Math.abs(r.top) <= 24;
 
-            // If the carousel is NOT fully displayed, never move cards horizontally!
+            // If the carousel is NOT fully displayed, allow standard page scrolling
             if (!fullyDisplayed) {
-                // If scrolling toward the carousel, bring it to full screen
-                if (r.top > 24 && e.deltaY > 0) {
-                    e.preventDefault();
-                    snapToFullScreen();
-                } else if (r.top < -24 && e.deltaY < 0) {
-                    e.preventDefault();
-                    snapToFullScreen();
-                }
                 return;
             }
 
@@ -728,9 +740,7 @@ export default function Projects({
                     if (hostRef.current) {
                         const r = hostRef.current.getBoundingClientRect();
                         const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-                        if (r.top > 24 && r.top < window.innerHeight * 0.85) {
-                            window.scrollTo({ top: window.scrollY + r.top, behavior });
-                        } else if (r.top < -24 && r.bottom > window.innerHeight * 0.15) {
+                        if (r.top > 32 && r.top < window.innerHeight * 0.75) {
                             window.scrollTo({ top: window.scrollY + r.top, behavior });
                         }
                     }

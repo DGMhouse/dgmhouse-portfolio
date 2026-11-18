@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Process — "How we work" / the life cycle of owning a website
+ * Process -"How we work" / the life cycle of owning a website
  *
  * A scroll-driven journey in plain English:
  *   intro  →  pinned stage with 7 steps  →  closing call-to-action
@@ -718,7 +718,7 @@ export default function Process({
   });
 
   return (
-    <section id="process" className={`${sans.className} dgm-proc relative text-white selection:bg-[#c6ff2e] selection:text-[#09090c]`} style={{ background: INK, color: BONE }}>
+    <section id="process-overview" className={`${sans.className} dgm-proc relative text-white selection:bg-[#c6ff2e] selection:text-[#09090c]`} style={{ background: INK, color: BONE }}>
       <style>{`
         @keyframes dgm-proc-dot { 0%,60%,100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }
         @keyframes dgm-proc-scan { 0% { left: 0; opacity: 1; } 92% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
@@ -779,7 +779,7 @@ export default function Process({
       </div>
 
       {/* ───────── Pinned journey ───────── */}
-      <div ref={sectionRef} className="relative" style={{ height: `calc(100svh + ${n * 70}svh)` }}>
+      <div id="process" ref={sectionRef} className="relative scroll-mt-20" style={{ height: `calc(100svh + ${n * 70}svh)` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col overflow-clip">
           {/* ambient */}
           <div aria-hidden className="pointer-events-none absolute inset-0">

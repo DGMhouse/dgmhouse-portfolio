@@ -64,26 +64,40 @@ const MEMBERS: Member[] = [
   },
 ];
 
-const VALUES = ["You talk to the people who build it", "No middlemen, no jargon", "We stay after launch"];
+const VALUES = [
+  "Talk directly with the person writing your code",
+  "Honest advice, zero agency buzzwords",
+  "Here with you before, during, and long after launch",
+];
 
-const pad = (v: number) => String(v).padStart(2, "0");
+const INITIALS = ["D", "G", "M"];
 
 export default function Team({
   members = MEMBERS,
   eyebrow = "The team",
-  title = "Three people. One house.",
+  title = "Three people.",
   titleHighlight = "Zero middlemen.",
-  intro = "No account managers, no hand-offs. The three of us design, build and launch every project ourselves, and you'll know us by name.",
+  intro = "We're Deekshith, Gagan, and Mokshith. When you work with DGM House, you deal directly with the three of us who actually design, code, and deploy your product. No account managers, no telephone games -just three builders who genuinely care about getting it right.",
   values = VALUES,
 }: TeamProps) {
   const n = members.length;
+  const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [seen, setSeen] = useState(false);
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    const el = gridRef.current;
+    const el = sectionRef.current;
     if (!el) return;
+
+    // If navigated to directly or already in viewport
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight + 150 && r.bottom > 0) {
+      setSeen(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -91,11 +105,20 @@ export default function Team({
           io.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0, rootMargin: "200px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  // Timely auto-rotation across members unless paused by user interaction
+  useEffect(() => {
+    if (!seen || isPaused || n <= 1) return;
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % n);
+    }, 3600);
+    return () => clearInterval(timer);
+  }, [seen, isPaused, n]);
 
   const spot = (e: React.PointerEvent<HTMLElement>) => {
     const el = e.currentTarget;
@@ -110,7 +133,7 @@ export default function Team({
   });
 
   return (
-    <section id="about" className={`${sans.className} dgm-team relative overflow-hidden text-white selection:bg-[#c6ff2e] selection:text-[#09090c]`} style={{ background: INK, color: BONE }}>
+    <section id="about" ref={sectionRef} className={`${sans.className} dgm-team relative scroll-mt-20 overflow-hidden text-white selection:bg-[#c6ff2e] selection:text-[#09090c]`} style={{ background: INK, color: BONE }}>
       <style>{`
         @media (prefers-reduced-motion: reduce) {
           .dgm-team *, .dgm-team *::before, .dgm-team *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
@@ -125,7 +148,7 @@ export default function Team({
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <p {...rv(0)} className={`${mono.className} mb-6 flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] ${rv(0).className}`} style={{ ...rv(0).style, color: LIME }}>
             <span className="h-px w-8" style={{ background: LIME }} />
-            {eyebrow} · {pad(n)}
+            {eyebrow}
             <span className="h-px w-8" style={{ background: LIME }} />
           </p>
           <h2 className={`${display.className} text-[clamp(2rem,5.4vw,4.8rem)] font-bold leading-[1.06] tracking-[-0.04em] ${rv(100).className}`} style={{ ...rv(100).style, color: BONE }}>
@@ -137,7 +160,14 @@ export default function Team({
         </div>
 
         {/* ───────── Cards ───────── */}
-        <div ref={gridRef} className="mt-16 flex flex-col gap-3 lg:mt-20 lg:h-[min(76svh,640px)] lg:flex-row" onMouseLeave={() => setActive((a) => a)}>
+        <div
+          ref={gridRef}
+          className="mt-16 flex flex-col gap-3 lg:mt-20 lg:h-[min(76svh,640px)] lg:flex-row"
+          onPointerEnter={() => setIsPaused(true)}
+          onPointerLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
+          onBlur={() => setIsPaused(false)}
+        >
           {members.map((m, i) => {
             const on = i === active;
             return (
@@ -145,10 +175,21 @@ export default function Team({
                 key={m.name}
                 tabIndex={0}
                 aria-label={`${m.name}`}
-                onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === "mouse") {
+                    setActive(i);
+                    setIsPaused(true);
+                  }
+                }}
                 onPointerMove={spot}
-                onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
+                onFocus={() => {
+                  setActive(i);
+                  setIsPaused(true);
+                }}
+                onClick={() => {
+                  setActive(i);
+                  setIsPaused(true);
+                }}
                 className={`group relative flex min-h-[26rem] cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border p-6 outline-none transition-[flex-grow,border-color,background-color,opacity,transform] duration-[900ms] ${EASE} focus-visible:border-[#c6ff2e]/60 sm:p-8 lg:min-h-0 lg:min-w-0 lg:basis-0 ${
                   on ? "border-[#c6ff2e]/30 bg-white/[0.05] lg:grow-[2.6]" : "border-white/10 bg-white/[0.02] hover:border-white/20 lg:grow"
                 } ${seen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
@@ -162,7 +203,7 @@ export default function Team({
                 />
                 <span aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)", backgroundSize: "26px 26px" }} />
 
-                {/* portrait: photo or giant initial */}
+                {/* portrait: photo or fallback */}
                 {m.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -171,27 +212,31 @@ export default function Team({
                     draggable={false}
                     className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-all duration-[900ms] ${EASE} ${on ? "scale-100 opacity-60 grayscale-0" : "scale-105 opacity-25 grayscale"}`}
                   />
-                ) : (
+                ) : null}
+
+                {/* 'D', 'G', 'M' initial overlay on top of photo when not in focus (bottom right) */}
+                <div
+                  aria-hidden
+                  className={`pointer-events-none absolute bottom-4 right-4 z-10 flex items-end justify-end transition-all duration-700 ${EASE} sm:bottom-6 sm:right-6 ${
+                    on ? "opacity-0 scale-90 translate-y-3 blur-sm pointer-events-none" : "opacity-85 scale-100 translate-y-0 blur-0"
+                  }`}
+                >
                   <span
-                    aria-hidden
-                    className={`${display.className} pointer-events-none absolute -right-[4%] top-[2%] select-none text-[clamp(14rem,30vw,26rem)] font-black leading-none transition-all duration-[900ms] ${EASE} lg:text-[clamp(12rem,22vw,22rem)]`}
+                    className={`${display.className} select-none text-[clamp(4.5rem,8.5vw,7.5rem)] font-black uppercase leading-none tracking-tighter`}
                     style={{
-                      color: on ? "rgba(198,255,46,.14)" : "transparent",
-                      WebkitTextStroke: `1.5px ${on ? "rgba(198,255,46,.9)" : "rgba(236,233,224,.2)"}`,
-                      transform: on ? "scale(1)" : "scale(.94)",
-                      textShadow: on ? "0 0 80px rgba(198,255,46,.25)" : "none",
+                      color: "rgba(198,255,46,.1)",
+                      WebkitTextStroke: `2px ${LIME}`,
+                      textShadow: "0 0 32px rgba(198,255,46,.4)",
                     }}
                   >
-                    {m.name[0]}
+                    {INITIALS[i % INITIALS.length]}
                   </span>
-                )}
+                </div>
+
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5" style={{ background: `linear-gradient(to top, ${INK} 25%, transparent)` }} />
 
-                {/* top row */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className={`${mono.className} text-[11px] font-bold tracking-[0.2em]`} style={{ color: LIME }}>
-                    {pad(i + 1)} / {pad(n)}
-                  </span>
+                {/* top row: status indicator without number counter */}
+                <div className="relative z-10 flex items-center justify-end">
                   <span className="relative flex h-2.5 w-2.5" aria-hidden>
                     <span className={`absolute inline-flex h-full w-full rounded-full transition-opacity duration-500 ${on ? "animate-ping opacity-70" : "opacity-0"}`} style={{ background: LIME }} />
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full transition-colors duration-500" style={{ background: on ? LIME : "rgba(255,255,255,.2)" }} />

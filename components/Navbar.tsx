@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * Navbar — DGM HOUSE
+ * Navbar -DGM HOUSE
  *
  *  Layout (three zones across the full width)
- *  • Left   — logo, plain and uncropped, no box around it
- *  • Centre — the only bordered element: a glass pill holding the links
- *  • Right  — "Book a call", no border
+ *  • Left   -logo, plain and uncropped, no box around it
+ *  • Centre -the only bordered element: a glass pill holding the links
+ *  • Right  -"Book a call", no border
  *  The whole bar glides away when you scroll down and returns when you scroll up.
  *
  *  Motion
@@ -47,7 +47,7 @@ export interface NavbarProps {
   items?: NavItem[];
   ctaText?: string;
   ctaLink?: string;
-  /** e.g. "https://wa.me/91XXXXXXXXXX" — shows a WhatsApp button when provided */
+  /** e.g. "https://wa.me/91XXXXXXXXXX" -shows a WhatsApp button when provided */
   whatsappLink?: string;
   /** Shown in the mobile menu when provided */
   email?: string;
@@ -61,7 +61,7 @@ const DEFAULT_ITEMS: NavItem[] = [
       { title: "Business Websites", desc: "Fast, good-looking sites that help customers find and trust you.", href: "#services" },
       { title: "Online Stores", desc: "Sell your products online with easy payments and order tracking.", href: "#services" },
       { title: "Mobile Apps", desc: "Android and iPhone apps your customers will actually enjoy using.", href: "#services" },
-      { title: "Custom Software", desc: "Billing, bookings, stock — tools made around the way you work.", href: "#services" },
+      { title: "Custom Software", desc: "Billing, bookings, stock -tools made around the way you work.", href: "#services" },
       { title: "Smart Automation", desc: "WhatsApp helpers and chatbots that save you hours every week.", href: "#services" },
       { title: "Website Care", desc: "We keep your site safe, fast and up to date, so you don't have to.", href: "#services" },
     ],
@@ -101,6 +101,9 @@ export default function Navbar({
 
   /* ---------- entrance ---------- */
   useEffect(() => {
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
@@ -182,13 +185,16 @@ export default function Navbar({
     if (href === "#" || href === "#top") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
       return;
     }
     const el = document.getElementById(href.slice(1));
     if (el) {
       e.preventDefault();
       window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: "smooth" });
-      history.replaceState(null, "", href);
+      history.replaceState(null, "", window.location.pathname + window.location.search);
     }
   }, []);
 
@@ -255,7 +261,7 @@ export default function Navbar({
           <a
             href="#top"
             onClick={(e) => go(e, "#top")}
-            aria-label="DGM House — back to top"
+            aria-label="DGM House -back to top"
             className={`pointer-events-auto relative z-[2] block shrink-0 transition-all duration-1000 ${EASE} ${mounted ? "translate-x-0 opacity-100 blur-0" : "-translate-x-6 opacity-0 blur-sm"}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -268,7 +274,7 @@ export default function Navbar({
             />
           </a>
 
-          {/* ── Centre: the only bordered thing — links pill ── */}
+          {/* ── Centre: the only bordered thing -links pill ── */}
           <div
             ref={barRef}
             onMouseMove={onBarMove}
@@ -438,7 +444,7 @@ export default function Navbar({
               </a>
             </div>
 
-            {/* Hamburger (mobile) — no border */}
+            {/* Hamburger (mobile) -no border */}
             <button
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
