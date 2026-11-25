@@ -649,7 +649,7 @@ export default function Process({
   closingHighlight = "a friendly chat.",
   closingText = "It's free to talk. Tell us your idea and we'll tell you honestly how we'd bring it to life: what it takes, how long it'll be, and what it'll cost.",
   ctaText = "Connect with us",
-  ctaLink = "tel:+6360344703",
+  ctaLink = "tel:+916360344703",
 }: ProcessProps) {
   const n = steps.length;
   const sectionRef = useRef<HTMLDivElement>(null);

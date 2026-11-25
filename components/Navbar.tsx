@@ -81,7 +81,7 @@ export default function Navbar({
   logoSrc = "/logo.svg",
   items = DEFAULT_ITEMS,
   ctaText = "Connect",
-  ctaLink = "tel:+6360344703",
+  ctaLink = "tel:+916360344703",
   whatsappLink,
   email,
 }: NavbarProps) {
